@@ -1,3 +1,5 @@
+import 'package:calculator/themes/app_edgeinsets.dart';
+import 'package:calculator/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 import '../components/button_grid.dart';
@@ -15,11 +17,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: _builtAppBar(context),
-      body: Column(
-        children: [
-          _builtInput(context),
-          _builtButtons(context),
-        ],
+      body: Padding(
+        padding: AppEdgeInsets.horizontal,
+        child: Column(
+          children: [
+            _builtInput(context),
+            _builtButtons(context),
+          ],
+        ),
       ),
     );
   }
@@ -29,9 +34,11 @@ class _HomeState extends State<Home> {
       alignment: Alignment.bottomRight,
       width: MediaQuery.of(context).size.width,
       height: 200,
-      child: const Text(
+      child: Text(
         '0',
         textAlign: TextAlign.end,
+        style: AppTextStyles.secondaryTextStyle(
+            Theme.of(context).colorScheme.primary),
       ),
     );
   }
