@@ -13,36 +13,57 @@ class ButtonGrid extends StatefulWidget {
 }
 
 class _ButtonGridState extends State<ButtonGrid> {
+  List<String> buttons = Button.mainButtonTexts;
+  int crossAxisCount = 4;
+
+  void _onTap(String tap) {
+    if (tap == '') {
+      setState(() {
+        buttons = buttons == Button.mainButtonTexts
+            ? Button.allButtonTexts
+            : Button.mainButtonTexts;
+        crossAxisCount = crossAxisCount == 4 ? 5 : 4;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        itemCount: Button.mainButtonTexts.length,
+        itemCount: buttons.length,
         gridDelegate: _builtGridDelegate(),
         itemBuilder: _builtItems);
   }
 
   Widget? _builtItems(context, index) {
-    String text = Button.mainButtonTexts[index];
-    Color textColor = ['AC', 'C', '%', '÷', '×', '-', '+', '='].contains(text)
+    String text = buttons[index];
+    Color textColor = Button.operators.contains(text)
         ? Theme.of(context).colorScheme.secondary
         : Theme.of(context).colorScheme.primary;
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _onTap(text);
+      },
       child: Container(
         alignment: Alignment.center,
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.primaryTextStyle(textColor),
-        ),
+        child: text == ''
+            ? Icon(
+                Icons.repeat,
+                color: textColor,
+              )
+            : Text(
+                text,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.primaryTextStyle(textColor),
+              ),
       ),
     );
   }
 
   SliverGridDelegateWithFixedCrossAxisCount _builtGridDelegate() {
-    return const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
+    return SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: crossAxisCount,
       mainAxisSpacing: 5.0,
       crossAxisSpacing: 5.0,
     );
